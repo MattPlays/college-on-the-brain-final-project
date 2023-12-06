@@ -1,0 +1,40 @@
+{
+    "normalPathways": [
+      {
+        "text": "Study for 3 hours right after stressful class.",
+        "stressUp": 2,
+        "stressDown": 0,
+        "sleepUp": 0,
+        "sleepDown": 3
+      },
+      {
+        "text": "Take a quick power nap then study for 1 hour.",
+        "stressUp": 0,
+        "stressDown": 1,
+        "sleepUp": 1,
+        "sleepDown": 0
+      },
+      {
+        "text": "Hang out with friends and drink till 2am.",
+        "stressUp": 3,
+        "stressDown": 0,
+        "sleepUp": 0,
+        "sleepDown": 3
+      },
+      {
+        "text": "Study for 1 hour.",
+        "stressUp": 0,
+        "stressDown": 1,
+        "sleepUp": 0,
+        "sleepDown": 1
+      },
+      {
+        "text": "Take a scenic walk.",
+        "stressUp": 0,
+        "stressDown": 1,
+        "sleepUp": 0,
+        "sleepDown": 0
+      }
+    ]
+  }
+  
