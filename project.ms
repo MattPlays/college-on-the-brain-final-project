@@ -1,15 +1,25 @@
 // Research Question: "How does stress affect performance in the classroom?"
 // Throughout this program I will mention Stress and Sleep a ton-
 // -as they are directly related to my research question.
+// Sleep tends to occur when the ATP receptors in your brain are
+// activated (Dingman, 2022, p. 66)
+// Memory is the brain's way of making and keeping associations
+// between things that happen in our daily lives, sometimes they are
+// only in the brain for a short time (short-term memory) or the rest
+// of our lives (long-term memory) (Dingman, 2022, p. 30)
 // Stress is being used because it directly effects memory encoding-
 // memory consolidation, and memory retrieval. (Vogel et al. 2016, p. 3)
 // Students are often stressed by exams, tests, and other in-
 // classroom events which can lead to strong negative memories
-// (Vogel et al. 2016, p. 4)
-// which actually inspired me to start my quest on this research
-// project because I was always interested in different ways students
-// could learn and still be tested but not have their mental health
-// depleted by getting poor scores.
+// (Vogel et al. 2016, p. 4) which actually inspired me to start 
+// my quest on this research project because I was always 
+// interested in different ways students could learn and still be 
+// tested but not have their mental health depleted by getting 
+// poor scores.
+// People induced by stress can find tasks increasingly harder
+// than when not stressed or in some cases when pain is involved
+// stress can actually amplify the pain
+// (Schwabe et al. 2009, p. 4)
 import "events"
 import "json"
 import "mathUtil"
@@ -54,6 +64,17 @@ pathways = json.parse(file.open("pathways.json").read).normalPathways
 // creating this scenario because of the way it made me think about
 // how people actually learn and recall information throughout the
 // preparation of test studying.
+
+// "Stressed subjects performed worse than nonstressed controls 
+// when the learning and testing contexts were incongruent. 
+// This is in line with previous reports of impaired memory 
+// retrieval following stress" (Schwabe et al. 2009, p. 5)
+// The results from this experiment definitively say that people
+// who are stressed had a tougher time, this relates to my research
+// and game because it replicates the results of the study in terms
+// of the relationship between stress and memory
+
+// Grab the pathways, make a copy, shuffle them and return 4
 getNextPathwaySet = function
 	copy = pathways.deepCopy
 	copy.shuffle
@@ -67,6 +88,7 @@ updateMeters = function(player)
 	if not player then
 		player = Player.make
 	end if
+	// Format stress level into a percentage
 	print "Stress: "+player.currStress*10+"/100 " + " Sleep: "+player.currSleep*10+"/100"
 end function
 centerText = function(text)
@@ -104,7 +126,8 @@ customizePlayer = function
 	print "Gender:"
 	print "1. Male"
 	print "2. Female"
-	print "3. None"
+	print "3. Non-Binary"
+	print "4. None"
 	genderChoice = input("Please input your choice: ").val
 	gender = "None"
 	if genderChoice == 1 then
@@ -112,6 +135,9 @@ customizePlayer = function
 	end if
 	if genderChoice == 2 then
 		gender = "Female"
+	end if
+	if genderChoice == 3 then
+		gender = "Non-Binary"
 	end if
 	// Like gender, the research on personality having direct correlation
 	// on stress is unfinished. However it will not be included in this game
@@ -145,21 +171,25 @@ showEndScreen = function
 	print
 	print
 	print
+	// If player stress level is greater than 60% then we lose
 	if player.currStress >= 6 then
 		centerText "You were too stressed and forgot the test :O"
 		centerText "You... LOSE"
 		return
 	end if
+	// If player sleep level is less than 30% then we lose
 	if player.currSleep <= 3 then
 		centerText "Uh.. oh You were too tired and fell asleep during the test."
 		centerText "You... LOSE"
 		return
 	end if
 	scoreText = "You got a "
+	// Compute score based on current stress and sleep levels
 	score = mathUtil.clamp((rnd * 100) - (ceil(player.currStress / 2)) + (ceil(player.currSleep / 2)), 0, 100)
 	scoreText += score
 	scoreText += "%"
 	centerText scoreText
+	// If we get higher than a 60% then we win.
 	if score >= 60 then
 		centerText "You... WIN"
 	else
@@ -170,9 +200,10 @@ showWelcome
 clear
 customizePlayer
 day = 1
+MAX_DAYS = 3
 update = function
 	clear
-	if day == 3 then
+	if day == outer.MAX_DAYS then
 		enventLoop.stop
 		showEndScreen
 	end if
@@ -193,10 +224,14 @@ update = function
 	end for
 	pathChoice = input("Please choose a path: ").val
 	path = paths[pathChoice-1]
+	// If the players stress level is not 0 then make the changes
+	// to the stress level
 	if not player.currStress == 0 then
 		player.currStress += path.stressUp
 		player.currStress -= path.stressDown
 	end if
+	// If the players sleep level is not max then make the changes
+	// to the sleep level
 	if not player.currSleep == 10 then
 		player.currSleep += path.sleepUp
 		player.currSleep -= path.sleepDown
@@ -210,3 +245,4 @@ eventLoop.run
 // proxy-sm.researchport.umd.edu/10.1038/npjscilearn.2016.11
 // Schwabe, L., Wolf, O.T. The context counts: Congruent learning and testing environments prevent memory retrieval impairment following
 // stress. Cognitive, Affective, & Behavioral Neuroscience 9, 229–236 (2009). https://doi-org.proxy-sm.researchport.umd.edu/10.3758/CABN.9.3.229
+// Dingman, M. (2022). Your brain, explained: What neuroscience reveals about your brain and its quirks. London: Nicholas Brealey Publishing. 
