@@ -88,7 +88,7 @@ updateMeters = function(player)
 	if not player then
 		player = Player.make
 	end if
-	// Format stress level into a percentage
+	// Format stress and sleep level into a percentage
 	print "Stress: "+player.currStress*10+"/100 " + " Sleep: "+player.currSleep*10+"/100"
 end function
 centerText = function(text)
@@ -110,7 +110,7 @@ showWelcome = function
 	makeBarrier
 	centerText "On the next screen you will customize your character"
 	makeBarrier
-	input("Press any key to continue ")
+	input("Press enter to continue ")
 end function
 player = {}
 customizePlayer = function
@@ -185,8 +185,8 @@ showEndScreen = function
 	end if
 	scoreText = "You got a "
 	// Compute score based on current stress and sleep levels
-	score = mathUtil.clamp((rnd * 100) - (ceil(player.currStress / 2)) + (ceil(player.currSleep / 2)), 0, 100)
-	scoreText += score
+	score = ((rnd * 100) + player.currSleep) - player.currStress
+	scoreText += round(score, 1)
 	scoreText += "%"
 	centerText scoreText
 	// If we get higher than a 60% then we win.
@@ -203,9 +203,10 @@ day = 1
 MAX_DAYS = 3
 update = function
 	clear
-	if day == outer.MAX_DAYS then
-		enventLoop.stop
+	if day > outer.MAX_DAYS then
+		outer.eventLoop.stop
 		showEndScreen
+		return
 	end if
 	makeBarrier
 	centerText "Day " + day
